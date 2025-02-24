@@ -11,6 +11,7 @@ public class CurrencyObject : MonoBehaviour
 
     [Header("CurrencyInformation")]
     public float Amount;
+    public CurrencySystem CurrencySystem;
 
     [Header("ObjectInfo")]
     public CapsuleCollider Hitbox;
@@ -25,17 +26,29 @@ public class CurrencyObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.gameObject.GetComponent<CapsuleCollider>().)
+
     }
     private void FixedUpdate()
     {
         animate();   
     }
 
-    private void OnCollisionEnter(Collision collision)
+    /*
+     void OnCollisionEnter(Collision collision)
     {
         //Check if hit the player
+        print(collision.collider.gameObject.name);
         if (collision.collider.gameObject.name == "PlayerV2")
+        {
+            collect();
+        }
+    }
+    */
+
+    private void OnTriggerEnter(Collider other)
+    {
+        print(other.gameObject.name);
+        if (other.gameObject.name == "PlayerObj")
         {
             collect();
         }
@@ -62,7 +75,19 @@ public class CurrencyObject : MonoBehaviour
 
     private void collect()
     {
+        CurrencySystem.AddPoints(Amount);
+        Hitbox.enabled = false;
+        transform.gameObject.SetActive(false);
+        if (respawnable)
+        {
+            Invoke(nameof(respawn), respawntime);
+        }
+    }
 
+    private void respawn()
+    {
+        transform.gameObject.SetActive(true);
+        Hitbox.enabled = true;
     }
 
     public Vector3 getSpawnLocation()
