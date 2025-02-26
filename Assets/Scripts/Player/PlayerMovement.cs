@@ -530,6 +530,10 @@ public class PlayerMovement : MonoBehaviour
     {
         return moveSpeed;
     }
+    public void setMaxSpeed(float n)
+    {
+        walkSpeed = n;
+    }
     public float GetMaxSpeed()
     {
         return walkSpeed;
