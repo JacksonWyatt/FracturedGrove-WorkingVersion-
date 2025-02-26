@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
@@ -15,6 +17,7 @@ public class Shop : MonoBehaviour
     public settingsScript settingsScript;
     public PlayerCam PlayerCamScript;
     public PlayerMovement PlayerMovementScript;
+    public CurrencySystem CurrencySystem;
 
     private Dictionary<string, int[]> UpgValues;
 
@@ -22,7 +25,8 @@ public class Shop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Set Values in upgradeDictionary
+                //Set Values in upgradeDictionary//
+        // Values go [String:StatName] = {int:Level,int:Cost}//
         UpgValues = new Dictionary<string, int[]>()
         {
             ["runspeed"] = new int[2] { 1, 5 },
@@ -33,6 +37,11 @@ public class Shop : MonoBehaviour
             ["dimensionaltravel"] = new int[2] { 1, 5 },
         };
         
+        //add listeners for the button clicks//
+        foreach (Button b in UpgradeButtons)
+        {
+            b.onClick.AddListener(() => ButtonClicked(b.gameObject.transform.parent.gameObject.name));
+        }
 
     }
 
@@ -76,6 +85,9 @@ public class Shop : MonoBehaviour
         else
         {
             //Set player to unmoveable and camera locked//
+            PlayerMovementScript.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            PlayerMovementScript.SetMoveSpeed(0);
+            PlayerMovementScript.enabled = false;
             PlayerCamScript.sensX = 0;
             PlayerCamScript.sensY = 0;
             settingsScript.enabled = false;
@@ -85,5 +97,11 @@ public class Shop : MonoBehaviour
             //Enable the ShopCanvas//
             ShopCanvas.GetComponent<Canvas>().enabled = true;
         }
+    }
+
+    //OnButtonClickFunction//
+    private void ButtonClicked(string valName)
+    {
+        print(valName);
     }
 }

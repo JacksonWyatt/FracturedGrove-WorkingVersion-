@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8765176549361721160}
   - component: {fileID: 8493903650691147946}
+  - component: {fileID: 718668873672397062}
   m_Layer: 0
   m_Name: CanvasHandler
   m_TagString: Untagged
@@ -49,3 +50,28 @@ MonoBehaviour:
   UICanvas: {fileID: 0}
   CameraScript: {fileID: 0}
   playerMovementClass: {fileID: 0}
+--- !u!114 &718668873672397062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534414495161258506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccffa06d4b1ba1149af1aa01e6f73815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Interface: {fileID: 0}
+  Settings: {fileID: 0}
+  ShopCanvas: {fileID: 0}
+  settingsScript: {fileID: 8493903650691147946}
+  PlayerCamScript: {fileID: 0}
+  PlayerMovementScript: {fileID: 0}
+  UpgradeButtons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
