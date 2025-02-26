@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class settings : MonoBehaviour
+public class settingsScript : MonoBehaviour
 {
 
     public Slider scroll;
