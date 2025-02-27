@@ -8,6 +8,7 @@ public class DimensionNavigation : MonoBehaviour
     public PlayerMovement mover;
     public DimensionalObj dim;
 
+    public bool Unlocked;
     public KeyCode PhaseKey = KeyCode.E;
     public float switchCooldown;
     public bool canSwitchModes;
@@ -22,18 +23,21 @@ public class DimensionNavigation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Unlocked = false;
+
         mover = GetComponent<PlayerMovement>();
         if (IsIn4D())
         {
             ui.Negate();
         }
         //else 
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(PhaseKey) && canSwitchModes)
+        if (Input.GetKey(PhaseKey) && canSwitchModes && Unlocked) 
         {
             print("trying to switch modes");
             SwitchMode();
