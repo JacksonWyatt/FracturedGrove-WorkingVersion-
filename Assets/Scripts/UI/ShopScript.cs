@@ -36,7 +36,9 @@ public class Shop : MonoBehaviour
             ["WallRun"] = new int[2] { 1, 5 },
             ["dimensionaltravel"] = new int[2] { 1, 5 },
         };
-        
+
+        //ActivateShop();
+
         //add listeners for the button clicks//
         foreach (Button b in UpgradeButtons)
         {
