@@ -473,6 +473,7 @@ public class PlayerMovement : MonoBehaviour
     private void VelocityUpdate()
     {
         jumpForceAtTime = jumpForce * (moveSpeed / sprintSpeed) + 5;
+        sprintSpeed = walkSpeed + 5;
         slideForceAtTime = slideSpeed * (moveSpeed / sprintSpeed) + 5;
 
         if (state == MovementState.walking)
@@ -529,6 +530,10 @@ public class PlayerMovement : MonoBehaviour
     public float GetMoveSpeed()
     {
         return moveSpeed;
+    }
+    public void setMaxSpeed(float n)
+    {
+        walkSpeed = n;
     }
     public float GetMaxSpeed()
     {
