@@ -473,6 +473,7 @@ public class PlayerMovement : MonoBehaviour
     private void VelocityUpdate()
     {
         jumpForceAtTime = jumpForce * (moveSpeed / sprintSpeed) + 5;
+        sprintSpeed = walkSpeed + 5;
         slideForceAtTime = slideSpeed * (moveSpeed / sprintSpeed) + 5;
 
         if (state == MovementState.walking)

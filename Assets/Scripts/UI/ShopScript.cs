@@ -38,7 +38,7 @@ public class Shop : MonoBehaviour
             ["cling"] = new float[2] { 1, 5 },
             ["climb"] = new float[2] { 1, 5 },
             ["wallrun"] = new float[2] { 1, 5 },
-            ["dimensionaltravel"] = new float[2] { 1, 5 },
+            ["dimensionaltravel"] = new float[2] { 1, 100 },
         };
         
         //add listeners for the button clicks//
@@ -110,13 +110,13 @@ public class Shop : MonoBehaviour
         UpgValues.TryGetValue(valName, out float[] Info);
         if (Info[1] <= CurrencySystemScript.Points)
         {
-            ShopCanvas.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(0, 255, 0, 0.5f);
+            ShopCanvas.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(0, 200, 0, 0.2f);
             Invoke(nameof(FixTintColor), 0.25f);
 
             //Update UpgradeInfo//
-            Info[0] += 1;
-            Info[1] = Mathf.Pow(Info[1], 2);
             CurrencySystemScript.Points -= Info[1];
+            Info[0] += 1;
+            Info[1] = MathF.Round(Info[1] + (Info[1]/2));
 
             //Upgrade Stat//
             if (valName == "runspeed")
@@ -125,7 +125,7 @@ public class Shop : MonoBehaviour
             }
             else if (valName == "jumpheight")
             {
-                PlayerMovementScript.jumpForce++;
+                PlayerMovementScript.jumpForce += 0.25f;
             }
             else if (valName == "cling")
             {
@@ -146,14 +146,14 @@ public class Shop : MonoBehaviour
             else if (valName == "dimensionaltravel")
             {
                 DimensionNavigationScript.Unlocked = true;
-                ShopCanvas.gameObject.transform.GetChild(7).gameObject.active = false;
-                Info[1] = 0;
                 UpgradeButtons[5].enabled = false;
+                ShopCanvas.transform.GetChild(7).gameObject.GetComponent<Image>().enabled = true;
+                Info[1] = 0;
             }
         }
         else
         {
-            ShopCanvas.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(225, 0, 0, 0.5f);
+            ShopCanvas.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = new Color(150, 0, 0, 0.2f);
             Invoke(nameof(FixTintColor), 0.25f);
         }
     }
@@ -167,21 +167,18 @@ public class Shop : MonoBehaviour
     {
         if (ShopCanvas.enabled)
         {
-            print(ShopCanvas.gameObject.transform.GetChild(1).gameObject.name);
-            print(ShopCanvas.gameObject.transform.GetChild(1).GetChild(1).gameObject.name);
-            print(ShopCanvas.gameObject.transform.GetChild(1).GetChild(1).gameObject.GetComponent<TMP_Text>().text);
 
-            ShopCanvas.gameObject.transform.GetChild(1).GetChild(1).gameObject.GetComponent<TMP_Text>().text = "(LVL: " + UpgValues["runspeed"][0] + ")"; // Update Runspeed level text //
-            ShopCanvas.gameObject.transform.GetChild(1).GetChild(2).gameObject.GetComponent<TextMeshPro>().text = "COST: " + UpgValues["runspeed"][1] + "P"; // Update Runspeed Cost text  //
-            ShopCanvas.gameObject.transform.GetChild(2).GetChild(1).gameObject.GetComponent<TextMeshPro>().text = "(LVL: " + UpgValues["jumpheight"][0] + ")"; // Update jumpheight level text //
-            ShopCanvas.gameObject.transform.GetChild(2).GetChild(2).gameObject.GetComponent<TextMeshPro>().text = "COST: " + UpgValues["jumpheight"][1] + "P"; // Update jumpheight Cost text  //
-            ShopCanvas.gameObject.transform.GetChild(3).GetChild(1).gameObject.GetComponent<TextMeshPro>().text = "(LVL: " + UpgValues["cling"][0] + ")"; // Update cling level text //
-            ShopCanvas.gameObject.transform.GetChild(3).GetChild(2).gameObject.GetComponent<TextMeshPro>().text = "COST: " + UpgValues["cling"][1] + "P"; // Update cling Cost text  //
-            ShopCanvas.gameObject.transform.GetChild(4).GetChild(1).gameObject.GetComponent<TextMeshPro>().text = "(LVL: " + UpgValues["climb"][0] + ")"; // Update climb level text //
-            ShopCanvas.gameObject.transform.GetChild(4).GetChild(2).gameObject.GetComponent<TextMeshPro>().text = "COST: " + UpgValues["climb"][1] + "P"; // Update climb Cost text  //
-            ShopCanvas.gameObject.transform.GetChild(5).GetChild(1).gameObject.GetComponent<TextMeshPro>().text = "(LVL: " + UpgValues["wallrun"][0] + ")"; // Update wallrun level text //
-            ShopCanvas.gameObject.transform.GetChild(5).GetChild(2).gameObject.GetComponent<TextMeshPro>().text = "COST: " + UpgValues["wallrun"][1] + "P"; // Update wallrun Cost text  //
-            ShopCanvas.gameObject.transform.GetChild(6).GetChild(2).gameObject.GetComponent<TextMeshPro>().text = "COST: " + UpgValues["dimensionaltravel"][1] + "P"; // Update dimensionaltravel Cost text  //
+            ShopCanvas.gameObject.transform.GetChild(1).GetChild(1).gameObject.GetComponent<TMP_Text>().text = "(LVL: " + UpgValues["runspeed"][0].ToString() + ")"; // Update Runspeed level text //
+            ShopCanvas.gameObject.transform.GetChild(1).GetChild(2).gameObject.GetComponent<TMP_Text>().text = "COST: " + UpgValues["runspeed"][1].ToString() + "P"; // Update Runspeed Cost text  //
+            ShopCanvas.gameObject.transform.GetChild(2).GetChild(1).gameObject.GetComponent<TMP_Text>().text = "(LVL: " + UpgValues["jumpheight"][0].ToString() + ")"; // Update jumpheight level text //
+            ShopCanvas.gameObject.transform.GetChild(2).GetChild(2).gameObject.GetComponent<TMP_Text>().text = "COST: " + UpgValues["jumpheight"][1].ToString() + "P"; // Update jumpheight Cost text  //
+            ShopCanvas.gameObject.transform.GetChild(3).GetChild(1).gameObject.GetComponent<TMP_Text>().text = "(LVL: " + UpgValues["cling"][0].ToString() + ")"; // Update cling level text //
+            ShopCanvas.gameObject.transform.GetChild(3).GetChild(2).gameObject.GetComponent<TMP_Text>().text = "COST: " + UpgValues["cling"][1].ToString() + "P"; // Update cling Cost text  //
+            ShopCanvas.gameObject.transform.GetChild(4).GetChild(1).gameObject.GetComponent<TMP_Text>().text = "(LVL: " + UpgValues["climb"][0].ToString() + ")"; // Update climb level text //
+            ShopCanvas.gameObject.transform.GetChild(4).GetChild(2).gameObject.GetComponent<TMP_Text>().text = "COST: " + UpgValues["climb"][1].ToString() + "P"; // Update climb Cost text  //
+            ShopCanvas.gameObject.transform.GetChild(5).GetChild(1).gameObject.GetComponent<TMP_Text>().text = "(LVL: " + UpgValues["wallrun"][0].ToString() + ")"; // Update wallrun level text //
+            ShopCanvas.gameObject.transform.GetChild(5).GetChild(2).gameObject.GetComponent<TMP_Text>().text = "COST: " + UpgValues["wallrun"][1].ToString() + "P"; // Update wallrun Cost text  //
+            ShopCanvas.gameObject.transform.GetChild(6).GetChild(1).gameObject.GetComponent<TMP_Text>().text = "COST: " + UpgValues["dimensionaltravel"][1].ToString() + "P"; // Update dimensionaltravel Cost text  //
         }
     }
 }
