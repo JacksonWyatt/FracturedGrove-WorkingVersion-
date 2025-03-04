@@ -324,6 +324,15 @@ public class PlayerMovement : MonoBehaviour
 
             if (rb.velocity.y > 0)
                 rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+
+            if (state == MovementState.idle)
+            {
+                groundDrag = 255;
+            }
+            else
+            {
+                groundDrag = startDrag;
+            }
         }
 
         // On ground

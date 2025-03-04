@@ -13,6 +13,9 @@ public class DimensionalObj : MonoBehaviour
     string tagBoth = "Both";
     string tag3D = "3D";
 
+    public Material activePTWall;
+    public Material inactivePTWall;
+
     public LayerMask whatIsWall;
     public LayerMask whatIsPassThrough;
     public LayerMask whatIsWallAndPT;
@@ -130,6 +133,7 @@ public class DimensionalObj : MonoBehaviour
                     if(obj.layer == LayerMask.NameToLayer("whatIsWallAndPT"))
                     {
                         obj.layer = LayerMask.NameToLayer("whatIsPassthrough");
+                        obj.GetComponent<MeshRenderer>().material = inactivePTWall;
                         print("Object: " + obj.name + "  |  Layer was:  'whatIsWallAndPT'  |  Layer is now:  '" + obj.layer + "'");
                     }
                         
@@ -146,6 +150,7 @@ public class DimensionalObj : MonoBehaviour
                     if (obj.layer == LayerMask.NameToLayer("whatIsPassthrough"))
                     {
                         obj.layer = LayerMask.NameToLayer("whatIsWallAndPT");
+                        obj.GetComponent<MeshRenderer>().material = activePTWall;
                         print("Object: " + obj.name + "  |  Layer was:  'whatIsPassthrough'  |  Layer is now:  '" + obj.layer + "'");
                     }
                         
