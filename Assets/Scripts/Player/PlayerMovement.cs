@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
     public float playerHeight;
     public LayerMask whatIsGround;
     public LayerMask whatIs4DGround;
+    public LayerMask whatIsGroundAndPT;
     bool grounded;
 
     [Header("Slope Handling")]
@@ -112,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
     {
         // Ground check
         //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
-        if(Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround) || (Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIs4DGround) && nav.IsIn4D()))
+        if((Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround) || (Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIs4DGround) || (Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGroundAndPT)))))
         {
             grounded = true;
         }
@@ -327,7 +328,8 @@ public class PlayerMovement : MonoBehaviour
 
             if (state == MovementState.idle)
             {
-                groundDrag = 255;
+                //groundDrag = 255;
+                //rb.AddForce(-1*GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
             }
             else
             {
@@ -353,7 +355,19 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
 
         // Turn gravity off while on slope
-        rb.useGravity = !OnSlope();
+        if (OnSlope())
+        {
+            if(state == MovementState.idle)
+            {
+                rb.useGravity = true;
+            }
+            else
+            {
+                rb.useGravity = false;
+            }
+        }
+        else
+            rb.useGravity = true;
     }
 
     public void MoveTo(Vector3 newLoc)
@@ -402,7 +416,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForceAtTime, ForceMode.Impulse);
-        Debug.Log("Trying to jump with a force of "+jumpForceAtTime);
+        //Debug.Log("Trying to jump with a force of "+jumpForceAtTime);
     }
 
     private void ResetJump()
@@ -454,7 +468,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ResetSlide()
     {
-        print("Resetting slide");
+        //print("Resetting slide");
         readyToSlide = true;
         lockedDir = moveDirection.normalized;
         SlideTime = 0;

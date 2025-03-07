@@ -51,7 +51,7 @@ public class Vaulting : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Space))
             {
-                print("trying to vault");
+                //print("trying to vault");
                 //step = 0;
                 //print("Step is reset to " + step);
                 vault();
@@ -65,19 +65,19 @@ public class Vaulting : MonoBehaviour
                 transform.localScale = new Vector3(transform.localScale.x, mover.crouchYScale, transform.localScale.z);
                 rb.AddForce(Vector3.down * 3f, ForceMode.Impulse);
                 step++;
-                print("step " + step);
+                //print("step " + step);
             }
             else if (step == 1 && !aboveObsticle())
             {
                 IEnumerator helper = VaultHelper();
                 StartCoroutine(helper);
                 step++;
-                print("step " + step);
+                //print("step " + step);
             }
             else if (step == 2)
             {
                 step = 0;
-                print("Step is reset to " + step);
+                //print("Step is reset to " + step);
             }
         }
     }

@@ -60,7 +60,7 @@ public class ClimbAndCling : MonoBehaviour
         //Check if player is able to cling
         if (Input.GetKey(Mover.jumpKey) && ReadyToCling() && canCling)
         {
-            print("readyToCling");
+            //print("readyToCling");
             canCling = false;
             Debounce = true;
             cling();
@@ -85,7 +85,7 @@ public class ClimbAndCling : MonoBehaviour
         //Check for wall run to the left
         else if (Input.GetKey(Mover.jumpKey) && (Mover.state == PlayerMovement.MovementState.walking || Mover.state == PlayerMovement.MovementState.clinging) && !Mover.GetGrounded() && ReadyToWallRun(false) && !Debounce)
         {
-            print("wallRunLeft");
+            //print("wallRunLeft");
             WallRun(false);
         }
 
@@ -103,7 +103,7 @@ public class ClimbAndCling : MonoBehaviour
             //check if the user has no wall in their wallrun direction
             if ((WallRunDirRight && (!Physics.SphereCast(orientation.position, 0.4f, orientation.right, out RaycastHit hitinfo, 0.5f, WhatIsWall) || !Physics.SphereCast(orientation.position, 0.4f, orientation.right, out hitinfo, 0.5f, WhatIsWallAndPT)) || (!WallRunDirRight && (!Physics.SphereCast(orientation.position, 0.4f, orientation.right * -1, out RaycastHit hitinfo2, 0.5f, WhatIsWall) || (!Physics.SphereCast(orientation.position, 0.4f, orientation.right * -1, out hitinfo2, 0.5f, WhatIsWallAndPT))))))
             {
-                print("stopped");
+                //print("stopped");
                 CancelInvoke();
                 StopWallRun();
             }
@@ -132,7 +132,7 @@ public class ClimbAndCling : MonoBehaviour
 
     private void KickOff()
     {
-        print("KickOff");
+        //print("KickOff");
         Mover.state = PlayerMovement.MovementState.air;
         StopCoroutine(ClingReset);
         Mover.SetMoveSpeed(KickOffStrength * 2);
@@ -141,7 +141,7 @@ public class ClimbAndCling : MonoBehaviour
     }
     private void Climb()
     {
-        print("climbing");
+        //print("climbing");
         Mover.state = PlayerMovement.MovementState.climbing;
         StopCoroutine(ClingReset);
 
@@ -165,12 +165,12 @@ public class ClimbAndCling : MonoBehaviour
 
         if (IsRight)
         {
-            print("wallRunRight");
+            //print("wallRunRight");
             WallRunDirRight = true;
         }
         else
         {
-            print("wallRunLeft");
+            //print("wallRunLeft");
             WallRunDirRight = false;
         }
 
@@ -188,7 +188,7 @@ public class ClimbAndCling : MonoBehaviour
     private IEnumerator StopCling(float t)
     {
         yield return new WaitForSeconds(t);
-        print("clingEnded");
+        //print("clingEnded");
         Mover.state = PlayerMovement.MovementState.air;
         Mover.SetMoveSpeed(1);
 
@@ -216,7 +216,7 @@ public class ClimbAndCling : MonoBehaviour
 
     public void ResetCooldown()
     {
-        print("ResetCooldown");
+        //print("ResetCooldown");
         canCling = true;
     }
 
