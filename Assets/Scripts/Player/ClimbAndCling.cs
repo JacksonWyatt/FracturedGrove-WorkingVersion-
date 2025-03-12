@@ -117,7 +117,7 @@ public class ClimbAndCling : MonoBehaviour
         }
         else if (Mover.state == PlayerMovement.MovementState.climbing)
         {
-            rb.velocity = new Vector3(0, 3, 0);
+                rb.velocity = new Vector3(0, 3, 0);
         }
         else if (IsWallRunning)
         {
@@ -126,8 +126,6 @@ public class ClimbAndCling : MonoBehaviour
             rb.freezeRotation = true;
 
             //check if the user has no wall in their wallrun direction
-            print(WallRunDirRight);
-            print(!Physics.Raycast(orientation.position, orientation.right * -1, 2.5f, WhatIsWall));
             if ((WallRunDirRight && !Physics.Raycast(orientation.position, orientation.right, 2.5f, WhatIsWall)))
             {
                 print("stoppedRight");
@@ -301,11 +299,13 @@ public class ClimbAndCling : MonoBehaviour
         if (debugMode)
         {
             Gizmos.color = Color.red;
+            //edge check ray// 
+            Gizmos.DrawRay(new Ray(orientation.position, orientation.forward * 1f));
             //Wall Run Checks
-            Gizmos.DrawLine(orientation.position, orientation.position + orientation.right * 2.5f);
-            Gizmos.DrawLine(orientation.position, orientation.position + orientation.right * -2.5f);
-            Gizmos.DrawSphere(orientation.position + orientation.right * WallRunMaxDistance * -1, WallRunRadius);
-            Gizmos.DrawSphere(orientation.position + orientation.right * WallRunMaxDistance, WallRunRadius);
+            //Gizmos.DrawRay(new Ray(orientation.position, orientation.right * -2.5f));
+            //Gizmos.DrawRay(new Ray(orientation.position, orientation.right * 2.5f));
+            //Gizmos.DrawSphere(orientation.position + orientation.right * WallRunMaxDistance * -1, WallRunRadius);
+            //Gizmos.DrawSphere(orientation.position + orientation.right * WallRunMaxDistance, WallRunRadius);
             //Climb&ClingCheck
             Gizmos.DrawSphere(orientation.position + orientation.forward * ClingMaxDistance, ClingRadius);
             //KickOffCheck//

@@ -393,7 +393,6 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForceAtTime, ForceMode.Impulse);
-        Debug.Log("Trying to jump with a force of "+jumpForceAtTime);
     }
 
     private void ResetJump()
