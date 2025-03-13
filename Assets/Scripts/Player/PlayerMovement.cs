@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
+    public float sprintduration;
+    public float sprintCD;
     public float walkAcceleration;
     public float groundDrag;
 
@@ -62,7 +64,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Other Stuff")]
     public Transform orientation;
-
     float horizontalInput;
     float verticalInput;
 
@@ -402,7 +403,6 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForceAtTime, ForceMode.Impulse);
-        Debug.Log("Trying to jump with a force of "+jumpForceAtTime);
     }
 
     private void ResetJump()
@@ -481,7 +481,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void VelocityUpdate()
     {
-        jumpForceAtTime = jumpForce * (moveSpeed / sprintSpeed) + 5;
+        jumpForceAtTime = jumpForce * (moveSpeed / sprintSpeed)/2 + 5;
         sprintSpeed = walkSpeed + 5;
         slideForceAtTime = slideSpeed * (moveSpeed / sprintSpeed) + 5;
 
@@ -532,6 +532,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
+
+    private IEnumerator StopSprint()
+    {
+        for (int i = 0; i < SlideTime; i += SlideTime / 20)
+        {
+            yield return new WaitForSeconds(SlideTime / 20);
+            //Run the visual timer basically//
+        }
+        //Stop sprinting//
+        
+    }
+
     public void SetMoveSpeed(float speed)
     {
         moveSpeed = speed;
