@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
+    public float sprintduration;
+    public float sprintCD;
     public float walkAcceleration;
     public float groundDrag;
 
@@ -62,7 +64,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Other Stuff")]
     public Transform orientation;
-
     float horizontalInput;
     float verticalInput;
 
@@ -522,6 +523,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
+
+    private IEnumerator StopSprint()
+    {
+        for (int i = 0; i < SlideTime; i += SlideTime / 20)
+        {
+            yield return new WaitForSeconds(SlideTime / 20);
+            //Run the visual timer basically//
+        }
+        //Stop sprinting//
+        
+    }
+
     public void SetMoveSpeed(float speed)
     {
         moveSpeed = speed;

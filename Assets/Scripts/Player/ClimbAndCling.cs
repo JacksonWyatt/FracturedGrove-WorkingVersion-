@@ -117,7 +117,27 @@ public class ClimbAndCling : MonoBehaviour
         }
         else if (Mover.state == PlayerMovement.MovementState.climbing)
         {
+            //check if wall is in range of player
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
+            int wallCount = 0;
+            foreach (Collider collider in colliders) {
+                
+                if(collider.gameObject.layer == 9 || collider.gameObject.layer == 15 || collider.gameObject.layer == 8)
+                {
+                    wallCount++;
+                }
+            }
+            print(wallCount);
+
+            if (wallCount > 0) 
+            {
+                print("still touching wall");
                 rb.velocity = new Vector3(0, 3, 0);
+            } else
+            {
+                CancelInvoke();
+                StopClimb();
+            }    
         }
         else if (IsWallRunning)
         {
@@ -157,7 +177,6 @@ public class ClimbAndCling : MonoBehaviour
     {
         Mover.state = PlayerMovement.MovementState.clinging;
         Mover.SetMoveSpeed(1);
-        print(Mover.GetGrounded());
         StartCoroutine(ClingReset);
     }
 
@@ -275,7 +294,7 @@ public class ClimbAndCling : MonoBehaviour
 
     public bool ReadyToCling()
     {
-        return (Physics.SphereCast(transform.position, 0, orientation.forward, out RaycastHit hitInfo, 1, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 1, WhatIsWallAndPT)) && Mover.state != PlayerMovement.MovementState.clinging;
+        return (Physics.SphereCast(transform.position, 0, orientation.forward, out RaycastHit hitInfo, 0.75f, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 1, WhatIsWallAndPT)) && Mover.state != PlayerMovement.MovementState.clinging;
     }
 
     public bool ReadyToWallRun(bool toRight)
@@ -307,6 +326,7 @@ public class ClimbAndCling : MonoBehaviour
             //Gizmos.DrawSphere(orientation.position + orientation.right * WallRunMaxDistance * -1, WallRunRadius);
             //Gizmos.DrawSphere(orientation.position + orientation.right * WallRunMaxDistance, WallRunRadius);
             //Climb&ClingCheck
+            Gizmos.DrawSphere(transform.position + orientation.forward * 0, 0.75f);
             Gizmos.DrawSphere(orientation.position + orientation.forward * ClingMaxDistance, ClingRadius);
             //KickOffCheck//
             Gizmos.DrawSphere(orientation.position + orientation.forward * KickOffMaxDistance * -1, KickOffRadius);

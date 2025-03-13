@@ -14,6 +14,8 @@ public class UIInterface : UIClass
     private GameObject SpeedBar;
     private GameObject HealthBackground;
     private GameObject HealthBar;
+    private GameObject SprintBarBackground;
+    private GameObject SprintBar;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,8 @@ public class UIInterface : UIClass
         SpeedBar = GameObject.Find("VelocityBar");
         HealthBackground = GameObject.Find("HealthBarBackground");
         HealthBar = GameObject.Find("HealthBar");
+        SprintBarBackground = GameObject.Find("SprintCooldownBarBackground");
+        SprintBar = GameObject.Find("SprintCooldownBar");
 
         //Start corutines//
         StartCoroutine(SpeedFadeHelper());
@@ -110,4 +114,5 @@ public class UIInterface : UIClass
         //Add in when playerClass is added//
         //--------------------------------------------------------------------//
     }
+
 }
