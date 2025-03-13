@@ -46,7 +46,6 @@ public class Vaulting : MonoBehaviour
     {
 
         //print("Too High? " + tooHigh() + "  |  In Front? " + inFront() + "  |  Above? " + aboveObsticle() + "  |  Is Grounded? "+mover.GetGrounded()+"  |  Can Vault? " + canVault());
-
         if (canVault())
         {
             if (Input.GetKey(KeyCode.Space))

@@ -122,13 +122,14 @@ public class ClimbAndCling : MonoBehaviour
             int wallCount = 0;
             foreach (Collider collider in colliders) {
                 
+                //Search for collders which count as walls
                 if(collider.gameObject.layer == 9 || collider.gameObject.layer == 15 || collider.gameObject.layer == 8)
                 {
                     wallCount++;
                 }
             }
-            print(wallCount);
 
+            //if wall there continue to climb, or not stop climbing//
             if (wallCount > 0) 
             {
                 print("still touching wall");
