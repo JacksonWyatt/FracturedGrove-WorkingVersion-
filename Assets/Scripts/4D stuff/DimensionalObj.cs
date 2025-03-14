@@ -76,15 +76,18 @@ public class DimensionalObj : MonoBehaviour
                         {
                             obj.layer = LayerMask.NameToLayer("whatIsPassthroughWall");
                             obj.GetComponent<MeshRenderer>().material = inactivePTWall;
-                            //print("Object: " + obj.name + "  |  Layer was:  'whatIsWallAndPT'  |  Layer is now:  '" + obj.layer + "'");
                         }
 
                         else if (obj.layer == LayerMask.NameToLayer("whatIsGroundAndPT"))
                         {
                             obj.layer = LayerMask.NameToLayer("whatIsPassthroughGround");
                             obj.GetComponent<MeshRenderer>().material = inactivePTWall;
-                            //print("Object: " + obj.name + "  |  Layer was:  'whatIsGroundAndPT'  |  Layer is now:  '" + obj.layer + "'");
                         }
+
+                        // Setting 3D only objects inactive when in 4D mode
+                        else if (obj.layer == LayerMask.NameToLayer("whatIsIn3D"))
+                            if (obj.activeInHierarchy)
+                                obj.SetActive(false);
 
                     }
                     else
@@ -93,15 +96,18 @@ public class DimensionalObj : MonoBehaviour
                         {
                             obj.layer = LayerMask.NameToLayer("whatIsWallAndPT");
                             obj.GetComponent<MeshRenderer>().material = activePTWall;
-                            //print("Object: " + obj.name + "  |  Layer was:  'whatIsPassthroughWall'  |  Layer is now:  '" + obj.layer + "'");
                         }
 
                         else if (obj.layer == LayerMask.NameToLayer("whatIsPassthroughGround"))
                         {
                             obj.layer = LayerMask.NameToLayer("whatIsGroundAndPT");
                             obj.GetComponent<MeshRenderer>().material = activePTWall;
-                            //print("Object: " + obj.name + "  |  Layer was:  'whatIsPassthroughGround'  |  Layer is now:  '" + obj.layer + "'");
                         }
+
+                        // Setting 3D only objects active when not in 4D mode
+                        else if (obj.layer == LayerMask.NameToLayer("whatIsIn3D"))    
+                            if (!obj.activeInHierarchy)
+                                obj.SetActive(true);
 
 
                     }
@@ -112,10 +118,6 @@ public class DimensionalObj : MonoBehaviour
                     //do nothing
                 }
             }
-            //GameObject[] NotPT = GameObject.FindGameObjectsWithTag("whatIsWallAndPT");
-
-            //GameObject[] IsPT = GameObject.FindGameObjectsWithTag("whatIsPassthrough");
-
             
         }
     }

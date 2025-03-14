@@ -2533,7 +2533,7 @@ GameObject:
   m_Component:
   - component: {fileID: 675261676534157654}
   m_Layer: 0
-  m_Name: 4D Light 1
+  m_Name: Ceiling 4D Light 1
   m_TagString: 4D
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
