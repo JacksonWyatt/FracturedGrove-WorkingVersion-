@@ -15,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
     public float sprintSpeed;
     public float sprintduration;
     public float sprintCD;
+    private float SprintDurationLeft;
+    private bool SprintCoroutineRunning = false;
+    private bool canSprint = true;
     public float walkAcceleration;
     public float groundDrag;
 
@@ -266,11 +269,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // Mode - Sprinting
-        if (grounded && Input.GetKey(sprintKey) && moveSpeed >= walkSpeed)
+            // Mode - Sprinting
+            if (grounded && Input.GetKey(sprintKey) && moveSpeed >= walkSpeed && canSprint == true)
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
+                if (!SprintCoroutineRunning)
+                    StartCoroutine(SprintDuration());
+            
         }
 
         // Mode - Walking
@@ -369,6 +375,31 @@ public class PlayerMovement : MonoBehaviour
         {
             MoveTo(new Vector3(rb.position.x, 20, rb.position.z));
         }
+    }
+
+    private IEnumerator SprintDuration()
+    {
+        SprintCoroutineRunning = true;
+        SprintDurationLeft = sprintduration;
+        for (int i = 0; i < 20; i++)
+        {
+            yield return new WaitForSeconds(sprintduration / 20);
+            SprintDurationLeft -= sprintduration / 20;
+        }
+        //AfterDurationEnds
+        if (state == MovementState.sprinting)
+        {
+            canSprint = false;
+            state = MovementState.walking;
+            Invoke(nameof(SprintCDReset), sprintCD);
+        }
+        SprintCoroutineRunning = false;
+    
+    }
+
+    private void SprintCDReset()
+    {
+        canSprint = true;
     }
 
     private void SpeedControl()
@@ -567,5 +598,10 @@ public class PlayerMovement : MonoBehaviour
     public float GetStartYScale()
     {
         return startYScale;
+    }
+
+    public float GetSprintDurationLeft()
+    {
+        return SprintDurationLeft;
     }
 }
