@@ -11,6 +11,7 @@ public class UIInterface : UIClass
 {
 
     public PlayerMovement PlayerMovement;
+    public DimensionNavigation dimNav;
 
     private GameObject SpeedBackground;
     private GameObject SpeedBar;
@@ -18,9 +19,11 @@ public class UIInterface : UIClass
     private GameObject HealthBar;
     private GameObject SprintBarBackground;
     private GameObject SprintBar;
+    private GameObject DimensionalBar;
     // Start is called before the first frame update
     void Start()
     {
+        DimensionalBar = GameObject.Find("DimensionBar");
         SpeedBackground = GameObject.Find("VelocityBarBackground");
         SpeedBar = GameObject.Find("VelocityBar");
         HealthBackground = GameObject.Find("HealthBarBackground");
@@ -38,6 +41,7 @@ public class UIInterface : UIClass
         UpdateSpeedUI();
         UpdateHealthUI();
         UpdateSprintUI();
+        UpdateDimensionUI();
     }
 
 
@@ -141,6 +145,19 @@ public class UIInterface : UIClass
                 SprintBar,
                 'x'
                 );
+        }
+    }
+
+    private void UpdateDimensionUI()
+    {
+        if (dimNav.in4D)
+        {
+            DimensionalBar.GetComponent<UnityEngine.UI.Image>().enabled = true;
+        }
+        else
+        {
+            DimensionalBar.GetComponent<UnityEngine.UI.Image>().enabled = false;
+
         }
     }
 

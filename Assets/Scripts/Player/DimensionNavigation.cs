@@ -12,7 +12,11 @@ public class DimensionNavigation : MonoBehaviour
 
     [Header("Info")]
     public bool Unlocked;
+    public float Duration;
+    private float DurationLeft;
     public KeyCode PhaseKey = KeyCode.E;
+    public float SwitchBurnoutCD;
+    private bool SwitchBurnedOut;
     public float switchCooldown;
     public bool canSwitchModes;
     public bool in4D;
@@ -32,6 +36,7 @@ public class DimensionNavigation : MonoBehaviour
     public LayerMask whatIsPassThrough;
     public LayerMask whatIs4D;
 
+    private IEnumerator DurationTimer;
 
     // Start is called before the first frame update
     void Start()
@@ -45,8 +50,10 @@ public class DimensionNavigation : MonoBehaviour
             trailGradients[i] = trailRenderers[i].colorGradient;
         }
 
-
         mover = GetComponent<PlayerMovement>();
+        DurationLeft = Duration;
+        DurationTimer = DimensionDuration();
+
         if (IsIn4D())
         {
             ui.Negate();
@@ -58,7 +65,7 @@ public class DimensionNavigation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(PhaseKey) && canSwitchModes && Unlocked) 
+        if (Input.GetKey(PhaseKey) && canSwitchModes && Unlocked && !SwitchBurnedOut) 
         {
             print("trying to switch modes");
             SwitchMode();
@@ -70,6 +77,7 @@ public class DimensionNavigation : MonoBehaviour
         //Change the world visuals//
         if (!IsIn4D())
         {
+            //If transferring to 4D//
             RenderSettings.fogColor = fogColor;
             RenderSettings.ambientLight = AmbienceColor;
             DynamicGI.UpdateEnvironment();
@@ -77,9 +85,12 @@ public class DimensionNavigation : MonoBehaviour
             {
                 trailRenderers[i].colorGradient = gradientChange[i];
             }
+
+            StartCoroutine(DurationTimer);
         }
         else
         {
+            //if transferring to 3D//
             RenderSettings.fogColor = prevFogColor;
             RenderSettings.ambientLight = prevambienceColor;
             DynamicGI.UpdateEnvironment();
@@ -87,6 +98,9 @@ public class DimensionNavigation : MonoBehaviour
             {
                 trailRenderers[i].colorGradient = trailGradients[i];
             }
+
+            StopCoroutine(DurationTimer);
+            DurationLeft = Duration;
         }
         //-----------------------//
 
@@ -96,6 +110,30 @@ public class DimensionNavigation : MonoBehaviour
         print("switched modes");
         Invoke(nameof(ResetSwitchCooldown), switchCooldown);
         
+    }
+
+    private IEnumerator DimensionDuration()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            yield return new WaitForSeconds(Duration / 20);
+            DurationLeft -= Duration/20;
+        }
+
+        if (in4D)
+        {
+            SwitchMode();
+            SwitchBurnedOut = true;
+            Invoke(nameof(UnBurnoutTravel), SwitchBurnoutCD);
+
+        }
+        
+
+    }
+
+    private void UnBurnoutTravel()
+    {
+        SwitchBurnedOut = false;
     }
 
     public void ResetSwitchCooldown()
@@ -108,5 +146,10 @@ public class DimensionNavigation : MonoBehaviour
         return in4D;
     }
 
+
+    public float GetDurationLeft()
+    {
+        return DurationLeft;
+    }
 
 }
