@@ -10,15 +10,20 @@ using UnityEngine.UIElements;
 public class UIInterface : UIClass
 {
 
+    public PlayerMovement PlayerMovement;
+    public DimensionNavigation dimNav;
+
     private GameObject SpeedBackground;
     private GameObject SpeedBar;
     private GameObject HealthBackground;
     private GameObject HealthBar;
     private GameObject SprintBarBackground;
     private GameObject SprintBar;
+    private GameObject DimensionalBar;
     // Start is called before the first frame update
     void Start()
     {
+        DimensionalBar = GameObject.Find("DimensionBar");
         SpeedBackground = GameObject.Find("VelocityBarBackground");
         SpeedBar = GameObject.Find("VelocityBar");
         HealthBackground = GameObject.Find("HealthBarBackground");
@@ -35,16 +40,18 @@ public class UIInterface : UIClass
     {
         UpdateSpeedUI();
         UpdateHealthUI();
+        UpdateSprintUI();
+        UpdateDimensionUI();
     }
 
 
     public void UpdateSpeedUI()
     {
         //Scale the speed UI to match the speed value of the player//
-        if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() <= GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMaxSpeed()){ // player is moving at normal speeds
+        if (PlayerMovement.GetMoveSpeed() <= PlayerMovement.GetMaxSpeed()){ // player is moving at normal speeds
             scaleByVal(
                 //Get the decimal percentage current speed is at//
-                GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() / GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMaxSpeed(),
+                PlayerMovement.GetMoveSpeed() / PlayerMovement.GetMaxSpeed(),
                 SpeedBar, //--Object being affected
                 'x' //--Dimension being scaled
                 );
@@ -83,13 +90,13 @@ public class UIInterface : UIClass
         {
             yield return new WaitForSeconds(1f);
             //Fade out UI//
-            if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() == 1 && SpeedBackground.GetComponent<UnityEngine.UI.Image>().color.a == 1)
+            if (PlayerMovement.GetMoveSpeed() == 1 && SpeedBackground.GetComponent<UnityEngine.UI.Image>().color.a == 1)
             {
                 StartCoroutine(fadeUI(SpeedBackground, 1, 30, 0));
 
                 //Fade in UI//
             }
-            else if (GameObject.Find("PlayerV2").GetComponent<PlayerMovement>().GetMoveSpeed() > 1 && SpeedBackground.GetComponent<UnityEngine.UI.Image>().color.a == 0)
+            else if (PlayerMovement.GetMoveSpeed() > 1 && SpeedBackground.GetComponent<UnityEngine.UI.Image>().color.a == 0)
             {
                 StartCoroutine(fadeUI(SpeedBackground, 1, 30, 1));
             }
@@ -113,6 +120,52 @@ public class UIInterface : UIClass
         // Determine if the UI should be visible or not out due to lack of use //
         //Add in when playerClass is added//
         //--------------------------------------------------------------------//
+    }
+
+    private void UpdateSprintUI()
+    {
+        if (PlayerMovement.state == PlayerMovement.MovementState.sprinting)
+        {
+            SprintBarBackground.GetComponent<UnityEngine.UI.Image>().enabled = true;
+            SprintBar.GetComponent<UnityEngine.UI.Image>().enabled = true;
+
+            scaleByVal(
+                PlayerMovement.GetSprintDurationLeft() / PlayerMovement.sprintduration,
+                SprintBar,
+                'x'
+            );
+
+        }
+        else
+        {
+            SprintBarBackground.GetComponent<UnityEngine.UI.Image>().enabled = false;
+            SprintBar.GetComponent<UnityEngine.UI.Image>().enabled = false;
+            scaleByVal(
+                1,
+                SprintBar,
+                'x'
+                );
+        }
+    }
+
+    private void UpdateDimensionUI()
+    {
+        if (dimNav.in4D)
+        {
+            DimensionalBar.GetComponent<UnityEngine.UI.Image>().enabled = true;
+
+            scaleByVal(
+                dimNav.GetDurationLeft() / dimNav.Duration,
+                DimensionalBar,
+                'x'
+                );
+
+        }
+        else
+        {
+            DimensionalBar.GetComponent<UnityEngine.UI.Image>().enabled = false;
+
+        }
     }
 
 }
