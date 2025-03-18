@@ -20,17 +20,17 @@ TagManager:
   - whatIsWallAndPT
   - whatIsWall
   - whatIsGround
-  - 
+  - whatIsGroundAndPT
   - whatIsObsticle
   - 
   - whatIs4DGround
   - whatIs4DWall
   - whatIsWallInBoth
   - 
-  - whatIsPassthrough
+  - whatIsPassthroughWall
+  - whatIsPassthroughGround
   - 
-  - 
-  - 
+  - whatIsIn3D
   - 
   - 
   - 

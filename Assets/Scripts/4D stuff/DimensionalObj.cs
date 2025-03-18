@@ -17,8 +17,12 @@ public class DimensionalObj : MonoBehaviour
     public Material inactivePTWall;
 
     public LayerMask whatIsWall;
-    public LayerMask whatIsPassThrough;
+    public LayerMask whatIsPassThroughWall;
     public LayerMask whatIsWallAndPT;
+
+    public LayerMask whatIsGround;
+    public LayerMask whatIsPassThroughGround;
+    public LayerMask whatIsGroundAndPT;
     
 
     // Start is called before the first frame update
@@ -44,124 +48,77 @@ public class DimensionalObj : MonoBehaviour
     }
 
     public void checkAndSwitchMode()
-    {
-        //foreach (GameObject obj in objects)
-        //{
-        //    if (dimNav.IsIn4D())
-        //    {
-        //        if (obj.tag.Equals("3D"))
-        //        {
-        //            if (!obj.activeInHierarchy)
-        //            {
-        //                obj.SetActive(true);
-        //            }
-        //        }
-        //        else if (obj.tag.Equals("3D"))
-        //        {
-        //            if (obj.layer.Equals("whatIsWallAndPT"))
-        //            {
-        //                int LayerPassthrough = LayerMask.NameToLayer("whatIsPassthrough");
-        //                obj.layer = LayerPassthrough;
-        //            }
-        //        }
-        //        else if (obj.tag.Equals("Both"))
-        //        {
-        //            //do nothing
-        //            break;
-        //        }
-        //    }
-        //}
-        //
-        //foreach (GameObject obj in objects)
-        //{
-        //    if (!dimNav.IsIn4D())
-        //    {
-        //        if (obj.tag.Equals("4D"))
-        //        {
-        //            if (obj.activeInHierarchy)
-        //            {
-        //                obj.SetActive(false);
-        //            }
-        //        }
-        //        else if (obj.tag.Equals("3D"))
-        //        {
-        //            if (obj.layer.Equals("whatIsPassthrough"))
-        //            {
-        //                int LayerPassthrough = LayerMask.NameToLayer("whatIsWallAndPT");
-        //                obj.layer = LayerPassthrough;
-        //            }
-        //        }
-        //        else if (obj.tag.Equals("Both"))
-        //        {
-        //            //do nothing
-        //            break;
-        //        }
-        //    }
-        //}
-
-        
+    {  
 
         foreach (GameObject obj in objects)
         {
-            //GameObject[] NotPT = GameObject.FindGameObjectsWithTag("whatIsWallAndPT");
-
-            //GameObject[] IsPT = GameObject.FindGameObjectsWithTag("whatIsPassthrough");
-
-            if (obj.tag.Equals(tag4D))
+            if (!isEmpty(obj))
             {
-                if (dimNav.IsIn4D())
+                if (obj.tag.Equals(tag4D))
                 {
-                    if (!obj.activeInHierarchy)
-                        obj.SetActive(true);
-                }
-                else
-                {
-                    if (obj.activeInHierarchy)
-                        obj.SetActive(false);
-                }
-            }
-
-            else if (obj.tag.Equals(tag3D)){
-                if (dimNav.IsIn4D())
-                {
-                    //if (obj.layer.Equals("whatIsWallAndPT"))
-                    //{
-                    //    int LayerPassthrough = LayerMask.NameToLayer("whatIsPassthrough");
-                    //    obj.layer = LayerPassthrough;
-                    //}
-                    //if (obj.layer.Equals("whatIsWallAndPT"))
-                    if(obj.layer == LayerMask.NameToLayer("whatIsWallAndPT"))
+                    if (dimNav.IsIn4D())
                     {
-                        obj.layer = LayerMask.NameToLayer("whatIsPassthrough");
-                        obj.GetComponent<MeshRenderer>().material = inactivePTWall;
-                        print("Object: " + obj.name + "  |  Layer was:  'whatIsWallAndPT'  |  Layer is now:  '" + obj.layer + "'");
+                        if (!obj.activeInHierarchy)
+                            obj.SetActive(true);
                     }
-                        
-
-                }
-                else
-                {
-                    //if (obj.layer.Equals("whatIsPassthrough"))
-                    //{
-                    //    int LayerPassthrough = LayerMask.NameToLayer("whatIsWallAndPT");
-                    //    obj.layer = LayerPassthrough;
-                    //}
-                    //if (obj.layer.Equals("whatIsPassthrough"))
-                    if (obj.layer == LayerMask.NameToLayer("whatIsPassthrough"))
+                    else
                     {
-                        obj.layer = LayerMask.NameToLayer("whatIsWallAndPT");
-                        obj.GetComponent<MeshRenderer>().material = activePTWall;
-                        print("Object: " + obj.name + "  |  Layer was:  'whatIsPassthrough'  |  Layer is now:  '" + obj.layer + "'");
+                        if (obj.activeInHierarchy)
+                            obj.SetActive(false);
                     }
-                        
-                    
+                }
+
+                else if (obj.tag.Equals(tag3D))
+                {
+                    if (dimNav.IsIn4D())
+                    {
+                        if (obj.layer == LayerMask.NameToLayer("whatIsWallAndPT"))
+                        {
+                            obj.layer = LayerMask.NameToLayer("whatIsPassthroughWall");
+                            obj.GetComponent<MeshRenderer>().material = inactivePTWall;
+                        }
+
+                        else if (obj.layer == LayerMask.NameToLayer("whatIsGroundAndPT"))
+                        {
+                            obj.layer = LayerMask.NameToLayer("whatIsPassthroughGround");
+                            obj.GetComponent<MeshRenderer>().material = inactivePTWall;
+                        }
+
+                        // Setting 3D only objects inactive when in 4D mode
+                        else if (obj.layer == LayerMask.NameToLayer("whatIsIn3D"))
+                            if (obj.activeInHierarchy)
+                                obj.SetActive(false);
+
+                    }
+                    else
+                    {
+                        if (obj.layer == LayerMask.NameToLayer("whatIsPassthroughWall"))
+                        {
+                            obj.layer = LayerMask.NameToLayer("whatIsWallAndPT");
+                            obj.GetComponent<MeshRenderer>().material = activePTWall;
+                        }
+
+                        else if (obj.layer == LayerMask.NameToLayer("whatIsPassthroughGround"))
+                        {
+                            obj.layer = LayerMask.NameToLayer("whatIsGroundAndPT");
+                            obj.GetComponent<MeshRenderer>().material = activePTWall;
+                        }
+
+                        // Setting 3D only objects active when not in 4D mode
+                        else if (obj.layer == LayerMask.NameToLayer("whatIsIn3D"))    
+                            if (!obj.activeInHierarchy)
+                                obj.SetActive(true);
+
+
+                    }
+                }
+
+                else if (obj.tag.Equals(tagBoth))
+                {
+                    //do nothing
                 }
             }
-
-            else if (obj.tag.Equals(tagBoth))
-            {
-                //do nothing
-            }
+            
         }
     }
 
@@ -171,28 +128,27 @@ public class DimensionalObj : MonoBehaviour
         if (obj == null) return null;
         //Get list of all  transforms in the main children object//
         Transform[] childrenT = obj.GetComponentsInChildren<Transform>();
-        GameObject[] children = new GameObject[childrenT.Length];
+        GameObject[] children = new GameObject[childrenT.Length-1];
 
         //Add each object of the transforms to the childrens list
         for (int i = 0; i < children.Length; i++)
         {
             
-                children[i] = childrenT[i].gameObject;
+                children[i] = childrenT[i+1].gameObject;
                 //print("" + children[i]);
             
         }
 
-        GameObject[] allButMain = new GameObject[childrenT.Length - 1];
-        for (int f = 0; f < children.Length - 1; f++)
-        {
-            allButMain[f] = children[f + 1].gameObject;
-            print("" + allButMain[f] + "  |  tag: " + allButMain[f].tag + "  |  layer:  " + allButMain[f].layer);
-        }
-        return allButMain;
-
-        //return children;
+        return children;
     }
 
+    public bool isEmpty(GameObject obj)
+    {
+        Component[] allComponents = obj.GetComponents<Component>();
 
+        if (allComponents.Length == 1) // Contains only Transform?
+            return true;
+        return false;
+    }
 
 }
