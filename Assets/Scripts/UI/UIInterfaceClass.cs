@@ -153,6 +153,13 @@ public class UIInterface : UIClass
         if (dimNav.in4D)
         {
             DimensionalBar.GetComponent<UnityEngine.UI.Image>().enabled = true;
+
+            scaleByVal(
+                dimNav.GetDurationLeft() / dimNav.Duration,
+                DimensionalBar,
+                'x'
+                );
+
         }
         else
         {

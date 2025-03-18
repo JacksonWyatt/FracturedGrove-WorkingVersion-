@@ -75,17 +75,20 @@ public class DimensionNavigation : MonoBehaviour
     public void SwitchMode()
     {
         //Change the world visuals//
+
         if (!IsIn4D())
         {
             //If transferring to 4D//
             RenderSettings.fogColor = fogColor;
             RenderSettings.ambientLight = AmbienceColor;
             DynamicGI.UpdateEnvironment();
+            print("ChangeVisual");
             for (int i = 0;i < trailRenderers.Length;i++)
             {
                 trailRenderers[i].colorGradient = gradientChange[i];
             }
 
+            print("RunningCoroutine");
             StartCoroutine(DurationTimer);
         }
         else
@@ -94,15 +97,20 @@ public class DimensionNavigation : MonoBehaviour
             RenderSettings.fogColor = prevFogColor;
             RenderSettings.ambientLight = prevambienceColor;
             DynamicGI.UpdateEnvironment();
+
+            print("ChangedVisualOFF");
             for (int i = 0; i < trailRenderers.Length; i++)
             {
                 trailRenderers[i].colorGradient = trailGradients[i];
             }
 
+            print("ChangedDurationOFF");
             StopCoroutine(DurationTimer);
+            DurationTimer = DimensionDuration();
             DurationLeft = Duration;
         }
         //-----------------------//
+
 
         canSwitchModes = false;
         in4D = !in4D;
@@ -114,16 +122,19 @@ public class DimensionNavigation : MonoBehaviour
 
     private IEnumerator DimensionDuration()
     {
+        print("running");
         for (int i = 0; i < 20; i++)
         {
             yield return new WaitForSeconds(Duration / 20);
+            print(DurationLeft);
             DurationLeft -= Duration/20;
         }
 
         if (in4D)
         {
-            SwitchMode();
+            print("Burnedout");
             SwitchBurnedOut = true;
+            SwitchMode();
             Invoke(nameof(UnBurnoutTravel), SwitchBurnoutCD);
 
         }
@@ -134,6 +145,7 @@ public class DimensionNavigation : MonoBehaviour
     private void UnBurnoutTravel()
     {
         SwitchBurnedOut = false;
+        DurationLeft = Duration;
     }
 
     public void ResetSwitchCooldown()
