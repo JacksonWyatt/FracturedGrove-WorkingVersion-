@@ -68,6 +68,9 @@ MonoBehaviour:
   settingsScript: {fileID: 8493903650691147946}
   PlayerCamScript: {fileID: 0}
   PlayerMovementScript: {fileID: 0}
+  CurrencySystemScript: {fileID: 0}
+  WallSystemScript: {fileID: 0}
+  DimensionNavigationScript: {fileID: 0}
   UpgradeButtons:
   - {fileID: 0}
   - {fileID: 0}
