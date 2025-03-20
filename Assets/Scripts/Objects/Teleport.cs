@@ -5,35 +5,49 @@ using UnityEngine;
 
 public class Teleport : MonoBehaviour
 {
-    public GameObject obj;
-
     //public float x;
     //public float y;
     //public float z;
     // Start is called before the first frame update
     GameObject[] children;
     Vector3 dest;
-    GameObject teleportObj;
+    public GameObject teleportObj;
+    GameObject teleportPlatform;
+    LayerMask whatIsPlayer;
+    Vector3 midpoint;
+    Collision col;
     void Start()
     {
         //Vector3 dest = new Vector3(x, y, z);
         children = getDescendants(transform.gameObject);
 
         dest = getObjectWithName(children, "Tele_Dest").transform.position;
+        teleportPlatform = getObjectWithName(children, "Tele_Platform");
+        whatIsPlayer = LayerMask.GetMask("whatIsPlayer");
+        midpoint = teleportPlatform.GetComponent<Renderer>().bounds.center;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
+        /*
+        if (Physics.Raycast(midpoint, Vector3.up, 0.5f, whatIsPlayer))
+        {
+            Debug.DrawRay(midpoint, Vector3.up * 0.5f, Color.green);
+            teleportObj.transform.position = dest;
+        }
+        else
+        {
+            Debug.DrawRay(midpoint, Vector3.up * 0.5f, Color.red);
+        }
+        */
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log("Entered");
         teleportObj = collision.gameObject;
-        teleportObj.transform.position = dest;
+        print("test message");
     }
 
     public GameObject[] getDescendants(GameObject obj)
