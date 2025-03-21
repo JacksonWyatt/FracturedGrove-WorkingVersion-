@@ -328,13 +328,18 @@ public class PlayerMovement : MonoBehaviour
 
             if (state == MovementState.idle)
             {
+                rb.useGravity = true;
                 groundDrag = 255;
+                //rb.isKinematic = true;
+                //rb.AddForce(-1*GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
             }
             else
             {
+                //rb.isKinematic = false;
                 groundDrag = startDrag;
             }
         }
+
 
         // On ground
         if (grounded)

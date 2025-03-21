@@ -11,7 +11,7 @@ public class Teleport : MonoBehaviour
     // Start is called before the first frame update
     GameObject[] children;
     Vector3 dest;
-    public GameObject teleportObj;
+    GameObject teleportObj;
     GameObject teleportPlatform;
     LayerMask whatIsPlayer;
     Vector3 midpoint;
@@ -46,8 +46,15 @@ public class Teleport : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        teleportObj = collision.gameObject;
-        print("test message");
+        
+        if(teleportPlatform.GetComponent<Collider>() == collision.GetContact(0).thisCollider)
+        {
+            //Debug.Log("Teleport Platform touched");
+            // Add your collision handling logic here based on the child
+            teleportObj = collision.gameObject;
+            teleportObj.transform.position = dest;
+        }
+        //print("test message");
     }
 
     public GameObject[] getDescendants(GameObject obj)

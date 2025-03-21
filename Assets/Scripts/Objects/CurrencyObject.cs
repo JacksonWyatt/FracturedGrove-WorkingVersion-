@@ -20,6 +20,7 @@ public class CurrencyObject : MonoBehaviour
     void Start()
     {
         SpawnLocation = transform.position;
+        CurrencySystem = GameObject.Find("PlayerV2").GetComponent<CurrencySystem>();
         StartCoroutine(animate());
     }
 

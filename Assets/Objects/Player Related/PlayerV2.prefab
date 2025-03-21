@@ -240,7 +240,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8326352139945260997}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1d31f317460ed94694319e307e0d54d, type: 3}
   m_Name: 
@@ -261,6 +261,7 @@ MonoBehaviour:
     m_Bits: 1024
   maxSlopeAngle: 45
   Orientation: {fileID: 669103443481001485}
+  rb: {fileID: 5813595556439253396}
   state: 0
   canAct: 0
   jumpKey: 32
@@ -287,6 +288,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 10
   sprintSpeed: 15
+  sprintduration: 0
+  sprintCD: 0
   walkAcceleration: 1
   groundDrag: 5
   jumpForce: 5
@@ -294,6 +297,12 @@ MonoBehaviour:
   airMultiplier: 0.4
   crouchSpeed: 3.5
   crouchYScale: 0.5
+  slideSpeed: 0
+  slideYScale: 0
+  slideDrag: 0
+  slideCooldown: 0
+  slideDecel: 0
+  slideCurrentSpeed: 0
   jumpKey: 32
   sprintKey: 304
   crouchKey: 306
@@ -305,6 +314,11 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
+  whatIs4DGround:
+    serializedVersion: 2
+    m_Bits: 0
   maxSlopeAngle: 40
   orientation: {fileID: 669103443481001485}
+  vault: {fileID: 0}
+  nav: {fileID: 0}
   state: 0
