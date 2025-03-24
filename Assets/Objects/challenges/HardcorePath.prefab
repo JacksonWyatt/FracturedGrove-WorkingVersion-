@@ -666,6 +666,7 @@ Transform:
   - {fileID: 1088992727298615452}
   - {fileID: 3631863427907001682}
   - {fileID: 5624761018840633004}
+  - {fileID: 987154517881471148}
   m_Father: {fileID: 7648645617176512028}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6572314011787402146
@@ -681,15 +682,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dimNav: {fileID: 0}
+  activePTWall: {fileID: 0}
+  inactivePTWall: {fileID: 0}
   whatIsWall:
     serializedVersion: 2
     m_Bits: 32768
-  whatIsPassThrough:
+  whatIsPassThroughWall:
     serializedVersion: 2
-    m_Bits: 262144
+    m_Bits: 0
   whatIsWallAndPT:
     serializedVersion: 2
     m_Bits: 256
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 0
+  whatIsPassThroughGround:
+    serializedVersion: 2
+    m_Bits: 0
+  whatIsGroundAndPT:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &7954900296140559095
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,7 +1062,6 @@ Transform:
   - {fileID: 4924626475697234841}
   - {fileID: 3175239295831335347}
   - {fileID: 7399607995438783355}
-  - {fileID: 987154517881471148}
   - {fileID: 7206953625963548032}
   - {fileID: 2701318764010946865}
   - {fileID: 8606186744891018345}
@@ -2420,7 +2431,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 7648645617176512028}
+    m_TransformParent: {fileID: 6531248109081255277}
     m_Modifications:
     - target: {fileID: 4703516078521166613, guid: 56bcba1e1ec533541af1b960892c3404, type: 3}
       propertyPath: m_Name
@@ -2428,15 +2439,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7814505775162909012, guid: 56bcba1e1ec533541af1b960892c3404, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -153.59698
+      value: -145.18192
       objectReference: {fileID: 0}
     - target: {fileID: 7814505775162909012, guid: 56bcba1e1ec533541af1b960892c3404, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.569389
+      value: 2.0127258
       objectReference: {fileID: 0}
     - target: {fileID: 7814505775162909012, guid: 56bcba1e1ec533541af1b960892c3404, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 16.777313
+      value: 47.125275
       objectReference: {fileID: 0}
     - target: {fileID: 7814505775162909012, guid: 56bcba1e1ec533541af1b960892c3404, type: 3}
       propertyPath: m_LocalRotation.w

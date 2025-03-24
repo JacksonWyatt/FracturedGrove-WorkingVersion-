@@ -36,6 +36,7 @@ public class ClimbAndCling : MonoBehaviour
     public Transform orientation;
     public Rigidbody rb;
     public PlayerCam cam;
+    public Transform camTransform;
     private float oldSens;
 
     [Header("DebugOptions")]
@@ -73,7 +74,7 @@ public class ClimbAndCling : MonoBehaviour
             Invoke(nameof(ResetDebounce), 0.5f);
         }
         //Check if player is able to climnb
-        else if (Input.GetKey(Mover.jumpKey) && (Mover.state == PlayerMovement.MovementState.clinging || Mover.GetGrounded()) && ((Physics.SphereCast(transform.position, 0, orientation.forward, out RaycastHit hitInfo, 2, WhatIsWall) || (Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 2, WhatIsWallAndPT) || (Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 2, WhatIs4DWall))) && !Debounce)))
+        else if (Input.GetKey(Mover.jumpKey) && (Mover.state == PlayerMovement.MovementState.clinging || Mover.GetGrounded()) && ((Physics.SphereCast(transform.position, 0, orientation.forward, out RaycastHit hitInfo, 2, WhatIsWall) || (Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 2, WhatIsWallAndPT))) && !Debounce))
         {
             if (Mover.GetGrounded())
             {
@@ -92,7 +93,7 @@ public class ClimbAndCling : MonoBehaviour
                 Invoke(nameof(ResetDebounce), climbTime);
         }
         //Check if wall is behind to KickOff
-        else if (Input.GetKey(Mover.jumpKey) && (Mover.state == PlayerMovement.MovementState.clinging || Mover.state == PlayerMovement.MovementState.climbing) && ((Physics.SphereCast(transform.position, 0, orientation.forward * -1, out RaycastHit hitInfo2, 3, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward * -1, out hitInfo2, 3, WhatIs4DWall)) && !Debounce))
+        else if (Input.GetKey(Mover.jumpKey) && !Mover.GetGrounded() && ((Physics.SphereCast(transform.position, 0, orientation.forward * -1, out RaycastHit hitInfo2, 1, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward * -1, out hitInfo2, 3, WhatIsWallAndPT)) && !Debounce))
         {
             KickOff();
         }
@@ -123,10 +124,9 @@ public class ClimbAndCling : MonoBehaviour
             foreach (Collider collider in colliders) {
                 
                 //Search for collders which count as walls
-                if(collider.gameObject.layer == 8 || collider.gameObject.layer == 9 || collider.gameObject.layer == 15)
+                if(collider.gameObject.layer == 9 || collider.gameObject.layer == 15 || collider.gameObject.layer == 8)
                 {
                     wallCount++;
-
                 }
             }
 
@@ -148,13 +148,13 @@ public class ClimbAndCling : MonoBehaviour
             rb.freezeRotation = true;
 
             //check if the user has no wall in their wallrun direction
-            if ((WallRunDirRight && (!Physics.Raycast(orientation.position, orientation.right, 2.5f, WhatIsWall) && !Physics.Raycast(orientation.position, orientation.right, 2.5f, WhatIs4DWall) && !Physics.Raycast(orientation.position, orientation.right, 2.5f, WhatIsWallAndPT))))
+            if ((WallRunDirRight && !Physics.Raycast(orientation.position, orientation.right, 2.5f, WhatIsWall)))
             {
                 print("stoppedRight");
                 CancelInvoke();
                 StopWallRun();
             }
-            else if ((!WallRunDirRight && (!Physics.Raycast(orientation.position, orientation.right * -1, 2.5f, WhatIsWall) && !Physics.Raycast(orientation.position, orientation.right * -1, 2.5f, WhatIs4DWall) && !Physics.Raycast(orientation.position, orientation.right * -1, 2.5f, WhatIsWallAndPT))))
+            else if ((!WallRunDirRight && !Physics.Raycast(orientation.position, orientation.right * -1, 2.5f, WhatIsWall)))
             {
                 print("stoppedLeft");
                 CancelInvoke();
@@ -188,7 +188,9 @@ public class ClimbAndCling : MonoBehaviour
         Mover.state = PlayerMovement.MovementState.air;
         StopCoroutine(ClingReset);
         Mover.SetMoveSpeed(KickOffStrength * 2);
-        rb.velocity = orientation.forward * KickOffStrength * 10f + orientation.up * KickOffStrength / 5;
+        rb.AddForce(orientation.forward * KickOffStrength * 2 + orientation.up * KickOffStrength * -1 * (camTransform.rotation.x / 90), ForceMode.Impulse);
+        //rb.velocity = orientation.forward * KickOffStrength *2 + orientation.up * KickOffStrength * -1 *(camTransform.rotation.x / 90);
+        print(rb.velocity);
 
     }
     private void Climb()
@@ -204,8 +206,8 @@ public class ClimbAndCling : MonoBehaviour
     private void WallRun(bool IsRight)
     {
         oldSens = cam.sensX;
-        cam.sensX = 0;
-        cam.sensY = 0;
+        //cam.sensX = 0;
+        //cam.sensY = 0;
         canCling = false;
         IsWallRunning = true;
         rb.useGravity = false;
@@ -296,7 +298,7 @@ public class ClimbAndCling : MonoBehaviour
 
     public bool ReadyToCling()
     {
-        return (Physics.SphereCast(transform.position, 0, orientation.forward, out RaycastHit hitInfo, 0.75f, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 1, WhatIsWallAndPT) || Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 1, WhatIs4DWall)) && Mover.state != PlayerMovement.MovementState.clinging;
+        return (Physics.SphereCast(transform.position, 0, orientation.forward, out RaycastHit hitInfo, 0.75f, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward, out hitInfo, 1, WhatIsWallAndPT)) && Mover.state != PlayerMovement.MovementState.clinging;
     }
 
     public bool ReadyToWallRun(bool toRight)
@@ -305,13 +307,13 @@ public class ClimbAndCling : MonoBehaviour
         {
             //print(canWallRun && Mover.GetMoveSpeed() >= minWallRunSpeed && Physics.SphereCast(orientation.position, 0.4f, orientation.right, out RaycastHit hitinfotest, 0.5f, WhatIsWall));
             WallRunDirRight = true;
-            return canWallRunRight && Mover.GetMoveSpeed() >= minWallRunSpeed && (Physics.SphereCast(orientation.position, 0.4f, orientation.right, out RaycastHit hitinfo, 0.5f, WhatIsWall) || Physics.SphereCast(orientation.position, 0.4f, orientation.right, out hitinfo, 0.5f, WhatIsWallAndPT) || Physics.SphereCast(orientation.position, 0.4f, orientation.right, out hitinfo, 0.5f, WhatIs4DWall));
+            return canWallRunRight && Mover.GetMoveSpeed() >= minWallRunSpeed && (Physics.SphereCast(orientation.position, 0.4f, orientation.right, out RaycastHit hitinfo, 0.5f, WhatIsWall) || Physics.SphereCast(orientation.position, 0.4f, orientation.right, out hitinfo, 0.5f, WhatIsWallAndPT));
         }
         else
         {
             //print(canWallRun && Mover.GetMoveSpeed() >= minWallRunSpeed && Physics.SphereCast(orientation.position, 0.4f, orientation.right * -1, out RaycastHit hitinfotest, 0.5f, WhatIsWall));
             WallRunDirRight = false;
-            return canWallRunLeft && Mover.GetMoveSpeed() >= minWallRunSpeed && (Physics.SphereCast(orientation.position, 0.4f, orientation.right * -1, out RaycastHit hitinfo, 0.5f, WhatIsWall) || Physics.SphereCast(orientation.position, 0.4f, orientation.right * -1, out hitinfo, 0.5f, WhatIsWallAndPT) || Physics.SphereCast(orientation.position, 0.4f, orientation.right * -1, out hitinfo, 0.5f, WhatIs4DWall));
+            return canWallRunLeft && Mover.GetMoveSpeed() >= minWallRunSpeed && (Physics.SphereCast(orientation.position, 0.4f, orientation.right * -1, out RaycastHit hitinfo, 0.5f, WhatIsWall) || Physics.SphereCast(orientation.position, 0.4f, orientation.right * -1, out hitinfo, 0.5f, WhatIsWallAndPT));
         }
     }
 
