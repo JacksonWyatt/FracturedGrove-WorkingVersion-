@@ -36,6 +36,7 @@ public class ClimbAndCling : MonoBehaviour
     public Transform orientation;
     public Rigidbody rb;
     public PlayerCam cam;
+    public Transform camTransform;
     private float oldSens;
 
     [Header("DebugOptions")]
@@ -92,7 +93,7 @@ public class ClimbAndCling : MonoBehaviour
                 Invoke(nameof(ResetDebounce), climbTime);
         }
         //Check if wall is behind to KickOff
-        else if (Input.GetKey(Mover.jumpKey) && !Mover.GetGrounded() && ((Physics.SphereCast(transform.position, 0, orientation.forward * -1, out RaycastHit hitInfo2, 3, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward * -1, out hitInfo2, 3, WhatIsWallAndPT)) && !Debounce))
+        else if (Input.GetKey(Mover.jumpKey) && !Mover.GetGrounded() && ((Physics.SphereCast(transform.position, 0, orientation.forward * -1, out RaycastHit hitInfo2, 1, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward * -1, out hitInfo2, 3, WhatIsWallAndPT)) && !Debounce))
         {
             KickOff();
         }
@@ -187,7 +188,9 @@ public class ClimbAndCling : MonoBehaviour
         Mover.state = PlayerMovement.MovementState.air;
         StopCoroutine(ClingReset);
         Mover.SetMoveSpeed(KickOffStrength * 2);
-        rb.velocity = orientation.forward * KickOffStrength * 10f + orientation.up * KickOffStrength / 5;
+        rb.AddForce(orientation.forward * KickOffStrength * 2 + orientation.up * KickOffStrength * -1 * (camTransform.rotation.x / 90), ForceMode.Impulse);
+        //rb.velocity = orientation.forward * KickOffStrength *2 + orientation.up * KickOffStrength * -1 *(camTransform.rotation.x / 90);
+        print(rb.velocity);
 
     }
     private void Climb()
@@ -203,8 +206,8 @@ public class ClimbAndCling : MonoBehaviour
     private void WallRun(bool IsRight)
     {
         oldSens = cam.sensX;
-        cam.sensX = 0;
-        cam.sensY = 0;
+        //cam.sensX = 0;
+        //cam.sensY = 0;
         canCling = false;
         IsWallRunning = true;
         rb.useGravity = false;
