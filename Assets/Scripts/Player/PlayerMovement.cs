@@ -115,7 +115,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        print(moveSpeed);
 
         // Ground check
         //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);

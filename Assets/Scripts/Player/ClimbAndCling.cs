@@ -188,10 +188,7 @@ public class ClimbAndCling : MonoBehaviour
         Mover.state = PlayerMovement.MovementState.air;
         StopCoroutine(ClingReset);
         Mover.SetMoveSpeed(KickOffStrength * 2);
-        rb.AddForce(orientation.forward * KickOffStrength * 2 + orientation.up * KickOffStrength * -1 * (camTransform.rotation.x / 90), ForceMode.Impulse);
-        //rb.velocity = orientation.forward * KickOffStrength *2 + orientation.up * KickOffStrength * -1 *(camTransform.rotation.x / 90);
-        print(rb.velocity);
-
+        rb.velocity = orientation.forward * KickOffStrength * 1 / 5 + orientation.up * KickOffStrength* 1/2.5f * (-1* camTransform.rotation.x * 2);
     }
     private void Climb()
     {
@@ -251,6 +248,7 @@ public class ClimbAndCling : MonoBehaviour
         Mover.SetMoveSpeed(1);
 
     }
+
 
     private void StopWallRun()
     {
