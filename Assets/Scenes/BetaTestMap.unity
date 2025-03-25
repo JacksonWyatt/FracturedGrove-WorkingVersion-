@@ -65934,6 +65934,10 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2816617586551195477, guid: cebc768948cbc084c82d427d873982aa, type: 3}
+      propertyPath: climbTime
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2816617586551195477, guid: cebc768948cbc084c82d427d873982aa, type: 3}
       propertyPath: kickoffCd
       value: 0.5
       objectReference: {fileID: 0}
@@ -65941,6 +65945,10 @@ PrefabInstance:
       propertyPath: camTransform
       value: 
       objectReference: {fileID: 286911153}
+    - target: {fileID: 2816617586551195477, guid: cebc768948cbc084c82d427d873982aa, type: 3}
+      propertyPath: wallClimbFatigueMulti
+      value: 0.95
+      objectReference: {fileID: 0}
     - target: {fileID: 3501578521048669484, guid: cebc768948cbc084c82d427d873982aa, type: 3}
       propertyPath: m_Name
       value: Player Setup
