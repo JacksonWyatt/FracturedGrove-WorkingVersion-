@@ -14,8 +14,10 @@ public class ClimbAndCling : MonoBehaviour
     [Header("Climbing variables")]
     private bool canCling;
     public float climbTime;
+    private float climbAmount;
     private float baseClimbTime;
     public float KickOffStrength;
+    private bool canKickOff = true;
     private bool Debounce;
     public float ClingCooldown;
 
@@ -90,10 +92,10 @@ public class ClimbAndCling : MonoBehaviour
             Climb();
 
             if (Mover.GetGrounded())
-                Invoke(nameof(ResetDebounce), climbTime);
+                Invoke(nameof(ResetDebounce), climbTime/ climbAmount);
         }
         //Check if wall is behind to KickOff
-        else if (Input.GetKey(Mover.jumpKey) && !Mover.GetGrounded() && ((Physics.SphereCast(transform.position, 0, orientation.forward * -1, out RaycastHit hitInfo2, 1, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward * -1, out hitInfo2, 3, WhatIsWallAndPT)) && !Debounce))
+        else if (canKickOff && Input.GetKey(Mover.jumpKey) && !Mover.GetGrounded() && ((Physics.SphereCast(transform.position, 0, orientation.forward * -1, out RaycastHit hitInfo2, 1, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward * -1, out hitInfo2, 3, WhatIsWallAndPT)) && !Debounce))
         {
             KickOff();
         }
@@ -172,6 +174,8 @@ public class ClimbAndCling : MonoBehaviour
         {
             canWallRunLeft = true;
             canWallRunRight = true;
+            canKickOff = true;
+            climbAmount = 0;
         }
     }
 
@@ -184,6 +188,7 @@ public class ClimbAndCling : MonoBehaviour
 
     private void KickOff()
     {
+        canKickOff = false;
         print("KickOff");
         Mover.state = PlayerMovement.MovementState.air;
         StopCoroutine(ClingReset);
@@ -192,12 +197,14 @@ public class ClimbAndCling : MonoBehaviour
     }
     private void Climb()
     {
-        print("climbing");
+        if (climbAmount < 4)
+        {
+            climbAmount++;
+            print("climbing");
         Mover.state = PlayerMovement.MovementState.climbing;
         StopCoroutine(ClingReset);
-
-
-        Invoke(nameof(StopClimb), climbTime);
+            Invoke(nameof(StopClimb), climbTime / climbAmount);
+        }
     }
 
     private void WallRun(bool IsRight)
