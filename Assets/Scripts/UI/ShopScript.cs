@@ -123,7 +123,8 @@ public class Shop : MonoBehaviour
             //Upgrade Stat//
             if (valName == "runspeed")
             {
-                PlayerMovementScript.setMaxSpeed(PlayerMovementScript.GetMaxSpeed() + 1);
+                PlayerMovementScript.setMaxSpeed(PlayerMovementScript.GetMaxSpeed() + 0.5f);
+                PlayerMovementScript.sprintSpeed += 0.5f;
             }
             else if (valName == "jumpheight")
             {
@@ -131,14 +132,19 @@ public class Shop : MonoBehaviour
             }
             else if (valName == "cling")
             {
-                if (WallSystemScript.climbTime != 0)
+                if (WallSystemScript.ClingCooldown != 0)
                 {
-                    WallSystemScript.climbTime /= 1.25f; 
+                    WallSystemScript.ClingCooldown /= 1.25f; 
                 }
             }
             else if (valName == "climb")
             {
                 WallSystemScript.climbTime += 0.5f;
+                if (Info[1]%5 == 0)
+                {
+                    WallSystemScript.SetwallClimbAmount(WallSystemScript.getWallClimbAmount() + 1);
+                    WallSystemScript.wallClimbFatigueMulti -= 0.025f;
+                }
             }
             else if (valName == "Wallrun")
             {

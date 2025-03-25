@@ -15,6 +15,9 @@ public class ClimbAndCling : MonoBehaviour
     private bool canCling;
     public float climbTime;
     private float climbAmount;
+    private float climbAmountTotal = 4;
+    public float wallClimbFatigueMulti;
+
     private float baseClimbTime;
     public float KickOffStrength;
     private bool canKickOff = true;
@@ -92,7 +95,7 @@ public class ClimbAndCling : MonoBehaviour
             Climb();
 
             if (Mover.GetGrounded())
-                Invoke(nameof(ResetDebounce), climbTime/ climbAmount);
+                Invoke(nameof(ResetDebounce), climbTime/ (climbAmount* wallClimbFatigueMulti));
         }
         //Check if wall is behind to KickOff
         else if (canKickOff && Input.GetKey(Mover.jumpKey) && !Mover.GetGrounded() && ((Physics.SphereCast(transform.position, 0, orientation.forward * -1, out RaycastHit hitInfo2, 1, WhatIsWall) || Physics.SphereCast(transform.position, 0, orientation.forward * -1, out hitInfo2, 3, WhatIsWallAndPT)) && !Debounce))
@@ -193,17 +196,17 @@ public class ClimbAndCling : MonoBehaviour
         Mover.state = PlayerMovement.MovementState.air;
         StopCoroutine(ClingReset);
         Mover.SetMoveSpeed(KickOffStrength * 2);
-        rb.velocity = orientation.forward * KickOffStrength * 1 / 5 + orientation.up * KickOffStrength* 1/2.5f * (-1* camTransform.rotation.x * 2);
+        rb.velocity = orientation.forward * KickOffStrength * 1 / 3 + orientation.up * KickOffStrength* 1/2.5f * (-1* camTransform.rotation.x * 2);
     }
     private void Climb()
     {
-        if (climbAmount < 4)
+        if (climbAmount < climbAmountTotal)
         {
             climbAmount++;
             print("climbing");
         Mover.state = PlayerMovement.MovementState.climbing;
         StopCoroutine(ClingReset);
-            Invoke(nameof(StopClimb), climbTime / climbAmount);
+            Invoke(nameof(StopClimb), climbTime / (climbAmount* wallClimbFatigueMulti));
         }
     }
 
@@ -322,6 +325,14 @@ public class ClimbAndCling : MonoBehaviour
         }
     }
 
+    public float getWallClimbAmount()
+    {
+        return climbAmountTotal;
+    }
+    public void SetwallClimbAmount(float n)
+    {
+        climbAmountTotal = n;
+    }
     private void OnDrawGizmos()
     {
         if (debugMode)
