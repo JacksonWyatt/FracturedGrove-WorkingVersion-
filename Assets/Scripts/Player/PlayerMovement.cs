@@ -335,18 +335,20 @@ public class PlayerMovement : MonoBehaviour
             if (rb.velocity.y > 0)
                 rb.AddForce(Vector3.down * 80f, ForceMode.Force);
 
+            
             if (state == MovementState.idle)
             {
                 rb.useGravity = true;
-                groundDrag = 255;
-                //rb.isKinematic = true;
+                //groundDrag = 255;
+                rb.isKinematic = true;
                 //rb.AddForce(-1*GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
             }
             else
             {
-                //rb.isKinematic = false;
-                groundDrag = startDrag;
+                rb.isKinematic = false;
+                //groundDrag = startDrag;
             }
+            
         }
 
 
@@ -364,11 +366,12 @@ public class PlayerMovement : MonoBehaviour
             
 
         // In air
-        else if(!grounded && !Physics.Raycast(transform.position, orientation.forward, 1))
+        else if(!grounded && !Physics.Raycast(transform.position, orientation.forward, 1f))
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
 
         // Turn gravity off while on slope
-        rb.useGravity = !OnSlope();
+        rb.useGravity = !(OnSlope() && state == MovementState.idle);
+
     }
 
     public void MoveTo(Vector3 newLoc)
