@@ -24,7 +24,7 @@ public class Teleport : MonoBehaviour
         dest = getObjectWithName(children, "Tele_Dest").transform.position;
         teleportPlatform = getObjectWithName(children, "Tele_Platform");
         whatIsPlayer = LayerMask.GetMask("whatIsPlayer");
-        midpoint = teleportPlatform.GetComponent<Renderer>().bounds.center;
+        //midpoint = teleportPlatform.GetComponent<Renderer>().bounds.center;
 
     }
 
