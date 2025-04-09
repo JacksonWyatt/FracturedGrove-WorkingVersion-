@@ -28,6 +28,12 @@ public class DimensionalObj : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //whatIsWall = LayerMask.GetMask("whatIsWall");
+        whatIsPassThroughWall = LayerMask.GetMask("whatIsPassthroughWall");
+        whatIsWallAndPT = LayerMask.GetMask("whatIsWallAndPT");
+        //whatIsGround = LayerMask.GetMask("whatIsGround");
+        whatIsPassThroughGround = LayerMask.GetMask("whatIsPassthroughGround");
+        whatIsGroundAndPT = LayerMask.GetMask("whatIsGroundAndPT");
         objects = getDescendants(transform.gameObject);
         checkAndSwitchMode();
     }

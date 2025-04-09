@@ -115,6 +115,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        //print(moveSpeed);
 
         // Ground check
         //grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
@@ -334,15 +335,22 @@ public class PlayerMovement : MonoBehaviour
             if (rb.velocity.y > 0)
                 rb.AddForce(Vector3.down * 80f, ForceMode.Force);
 
+            
             if (state == MovementState.idle)
             {
-                groundDrag = 255;
+                rb.useGravity = true;
+                //groundDrag = 255;
+                rb.isKinematic = true;
+                //rb.AddForce(-1*GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
             }
             else
             {
-                groundDrag = startDrag;
+                rb.isKinematic = false;
+                //groundDrag = startDrag;
             }
+            
         }
+
 
         // On ground
         if (grounded)
@@ -358,11 +366,12 @@ public class PlayerMovement : MonoBehaviour
             
 
         // In air
-        else if(!grounded && !Physics.Raycast(transform.position, orientation.forward, 1))
+        else if(!grounded && !Physics.Raycast(transform.position, orientation.forward, 1f))
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
 
         // Turn gravity off while on slope
-        rb.useGravity = !OnSlope();
+        rb.useGravity = !(OnSlope() && state == MovementState.idle);
+
     }
 
     public void MoveTo(Vector3 newLoc)
@@ -487,7 +496,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ResetSlide()
     {
-        print("Resetting slide");
+        //print("Resetting slide");
         readyToSlide = true;
         lockedDir = moveDirection.normalized;
         SlideTime = 0;
