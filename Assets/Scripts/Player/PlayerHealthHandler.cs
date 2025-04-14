@@ -17,6 +17,7 @@ public class PlayerHealthHandler : MonoBehaviour
     [Header("fallDamageInfo")]
     private bool falling = false;
     public float FallDamageStartPoint = 10f;
+    private bool TriedRolling = false;
     public float DmgMultiplier = 1.2f;
 
     [Header("PlayerInfo")]
@@ -97,15 +98,14 @@ public class PlayerHealthHandler : MonoBehaviour
 
     private void FallDamage(UnityEngine.Vector3 StartPos)
     {
-        while(PlayerMovement.state == PlayerMovement.MovementState.air)
-        {
-            print("Waiting for Ground");
-        }
+        PlayerMovement.SetMoveSpeed(PlayerMovement.GetMoveSpeed()/1.25f);
         float ChangeInHeight = Mathf.Floor(StartPos.y - transform.position.y);
-
+        print(ChangeInHeight);
         if (ChangeInHeight >= FallDamageStartPoint)
         {
-            Health -= 5 - (ChangeInHeight - FallDamageStartPoint) * DmgMultiplier;
+            print("Taking Damage");
+            Health -= 5 + (ChangeInHeight - FallDamageStartPoint) * DmgMultiplier;
+            print(Health);
         }
         falling = false;
     }
@@ -113,10 +113,29 @@ public class PlayerHealthHandler : MonoBehaviour
     private IEnumerator FallDamageHelper(UnityEngine.Vector3 startPos)
     {
         while (PlayerMovement.state == PlayerMovement.MovementState.air)
-            yield return new WaitForSeconds(0.5f);
-        FallDamage(startPos);
+        {
+            yield return new WaitForSeconds(0.3f);
+            if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+                TriedRolling = true;
+        }
+        //Call the fall damage function when the player is on the ground//
+
+        print(TriedRolling);
+        if ((!Input.GetKeyDown(KeyCode.LeftShift) && !Input.GetKeyDown(KeyCode.RightShift)) || TriedRolling)
+        {
+            FallDamage(startPos);
+        }
+        else if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && !TriedRolling)
+        {
+            Roll();
+        }
     }
 
+    //RollFunction to avoid taking fall damage
+    private void Roll()
+    {
+
+    }
     private void Death()
     {
         Health = 0;

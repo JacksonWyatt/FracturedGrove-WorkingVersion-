@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     private int TimeCount = 0;
     private int SlideTime = 0;
 
+    private bool IsJumpingbool = false;
+
     [Header("Movement")]
     private float moveSpeed;
     public float walkSpeed;
@@ -429,6 +431,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
+        IsJumpingbool = true;
         exitingSlope = true;
         //Debug.Log("exiting a slope");
 
@@ -436,10 +439,12 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         rb.AddForce(transform.up * jumpForceAtTime, ForceMode.Impulse);
+
     }
 
     private void ResetJump()
     {
+        IsJumpingbool = false;
         readyToJump = true;
 
         exitingSlope = false;
@@ -577,6 +582,10 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    public bool IsJumping()
+    {
+        return IsJumpingbool;
+    }
     public void SetMoveSpeed(float speed)
     {
         moveSpeed = speed;
