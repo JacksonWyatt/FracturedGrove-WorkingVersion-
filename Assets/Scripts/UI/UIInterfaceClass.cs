@@ -11,7 +11,8 @@ public class UIInterface : UIClass
 {
 
     public PlayerMovement PlayerMovement;
-    public DimensionNavigation dimNav;
+    public DimensionNavigation DimNav;
+    public PlayerHealthHandler PlayerHealthHandler;
 
     private GameObject SpeedBackground;
     private GameObject SpeedBar;
@@ -105,7 +106,7 @@ public class UIInterface : UIClass
     public void UpdateHealthUI()
     {
         //Scale the health UI to the health value of the player//
-        //Add in when playerClass is added//
+        scaleByVal(PlayerHealthHandler.GetHealth() / PlayerHealthHandler.MaxHealth, HealthBar, 'x');
         //----------------------------------------------------//
 
         //Change the Bar to match the transparency of the Background//
@@ -118,8 +119,19 @@ public class UIInterface : UIClass
         //---------------------------------------------------------//
 
         // Determine if the UI should be visible or not out due to lack of use //
-        //Add in when playerClass is added//
+        if (PlayerHealthHandler.GetHealth() == PlayerHealthHandler.MaxHealth)
+        {
+            Invoke(nameof(UpdateHealthUIHelper), 0.5f);
+        }
         //--------------------------------------------------------------------//
+    }
+
+    private void UpdateHealthUIHelper()
+    {
+        if (PlayerHealthHandler.GetHealth() == PlayerHealthHandler.MaxHealth && HealthBackground.GetComponent<UnityEngine.UI.Image>().color.a == 1)
+            StartCoroutine(fadeUI(HealthBackground, 1, 30, 0));
+        else if (HealthBackground.GetComponent<UnityEngine.UI.Image>().color.a == 0 && PlayerHealthHandler.GetHealth() != PlayerHealthHandler.MaxHealth)
+            StartCoroutine(fadeUI(HealthBackground, 1, 30, 1));
     }
 
     private void UpdateSprintUI()
@@ -150,12 +162,12 @@ public class UIInterface : UIClass
 
     private void UpdateDimensionUI()
     {
-        if (dimNav.in4D)
+        if (DimNav.in4D)
         {
             DimensionalBar.GetComponent<UnityEngine.UI.Image>().enabled = true;
 
             scaleByVal(
-                dimNav.GetDurationLeft() / dimNav.Duration,
+                DimNav.GetDurationLeft() / DimNav.Duration,
                 DimensionalBar,
                 'x'
                 );

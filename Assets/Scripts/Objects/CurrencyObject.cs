@@ -49,7 +49,7 @@ public class CurrencyObject : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //print(other.gameObject.name);
-        if (other.gameObject.name == "PlayerObj")
+        if (other.gameObject.name == "HumanCharacterDummy_M")
         {
             collect();
         }

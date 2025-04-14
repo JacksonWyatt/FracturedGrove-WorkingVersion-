@@ -240,7 +240,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8326352139945260997}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1d31f317460ed94694319e307e0d54d, type: 3}
   m_Name: 
@@ -261,7 +261,7 @@ MonoBehaviour:
     m_Bits: 1024
   maxSlopeAngle: 45
   Orientation: {fileID: 669103443481001485}
-  rb: {fileID: 5813595556439253396}
+  rb: {fileID: 0}
   state: 0
   canAct: 0
   jumpKey: 32

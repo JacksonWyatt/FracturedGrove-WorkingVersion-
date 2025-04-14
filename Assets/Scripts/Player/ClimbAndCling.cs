@@ -138,7 +138,6 @@ public class ClimbAndCling : MonoBehaviour
             //if wall there continue to climb, or not stop climbing//
             if (wallCount > 0) 
             {
-                print("still touching wall");
                 rb.velocity = new Vector3(0, 3, 0);
             } else
             {
