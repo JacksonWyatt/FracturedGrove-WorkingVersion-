@@ -22,7 +22,7 @@ public class AnimationHandler : MonoBehaviour
         {
             animator.SetBool("ReturnToIdle", true);
         }
-        else if (Mover.state == PlayerMovement.MovementState.air && !Mover.IsJumping() && !animator.GetBool("Falling"))
+        else if ((Mover.state == PlayerMovement.MovementState.air || !Mover.GetGrounded()) && !Mover.IsJumping() && !animator.GetBool("Falling"))
         {
             animator.SetBool("Falling", true);
         }

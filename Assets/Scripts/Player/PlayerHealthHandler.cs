@@ -38,7 +38,7 @@ public class PlayerHealthHandler : MonoBehaviour
         if ( Input.GetKey(KeyCode.X) && !clickDebounce)
         {
             clickDebounce = true;
-            Health -= MaxHealth-1;
+            Health -= 1;
             print(Health);
             StartCoroutine(ResetDebounce());
         }
