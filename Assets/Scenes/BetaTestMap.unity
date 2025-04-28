@@ -66996,7 +66996,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 105917441736963110, guid: cebc768948cbc084c82d427d873982aa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 359.39
+      value: 321.00012
       objectReference: {fileID: 0}
     - target: {fileID: 105917441736963110, guid: cebc768948cbc084c82d427d873982aa, type: 3}
       propertyPath: m_LocalPosition.y
@@ -67004,7 +67004,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105917441736963110, guid: cebc768948cbc084c82d427d873982aa, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 397.17
+      value: 272.98273
       objectReference: {fileID: 0}
     - target: {fileID: 105917441736963110, guid: cebc768948cbc084c82d427d873982aa, type: 3}
       propertyPath: m_LocalRotation.w
@@ -67086,6 +67086,10 @@ PrefabInstance:
       propertyPath: RightTrail
       value: 
       objectReference: {fileID: 508992789}
+    - target: {fileID: 4342409166797463579, guid: cebc768948cbc084c82d427d873982aa, type: 3}
+      propertyPath: Points
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4342409166797463579, guid: cebc768948cbc084c82d427d873982aa, type: 3}
       propertyPath: CurrencyTxt
       value: 
